@@ -1,3 +1,6 @@
+# WARNING: Do not run this file directly (e.g., `python env.py`).
+# It is designed to be executed by the Alembic CLI (e.g., `alembic upgrade head`).
+
 import os
 from dotenv import load_dotenv
 
