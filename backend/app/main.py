@@ -38,12 +38,14 @@ from app.api import auth, users
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(users.router, prefix="/api/v1")
 
+from datetime import datetime, timezone
+
 @app.get("/api/v1/health")
 def health_check():
     return {
         "status": "healthy",
         "database": "connected",
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     }
 
 @app.post("/api/v1/webhooks/n8n/trigger", status_code=status.HTTP_202_ACCEPTED, response_model=AgentJobResponse)

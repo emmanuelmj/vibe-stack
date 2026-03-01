@@ -1,7 +1,6 @@
 import uuid
-from sqlalchemy import Column, String, Boolean, Text, ForeignKey, DateTime
+from sqlalchemy import Column, String, Boolean, Text, ForeignKey, DateTime, Uuid, JSON
 from sqlalchemy.orm import DeclarativeBase, relationship
-from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.sql import func
 
 class Base(DeclarativeBase):
@@ -10,7 +9,7 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     email = Column(String(255), unique=True, nullable=False)
     hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(100), nullable=True)
@@ -25,11 +24,11 @@ class User(Base):
 class AgentJob(Base):
     __tablename__ = "agent_jobs"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    user_id = Column(Uuid, ForeignKey("users.id"))
     workflow_id = Column(String(100), nullable=False)
     status = Column(String(50), default="pending")
-    result_payload = Column(JSONB, nullable=True)
+    result_payload = Column(JSON, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
