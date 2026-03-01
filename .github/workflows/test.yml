@@ -53,5 +53,6 @@ jobs:
       env:
         DATABASE_URL: postgresql://vibe_user:vibe_password@localhost:5432/vibe_db
         SECRET_KEY: ci_secret_key_12345
+        PYTHONPATH: .
       run: |
-        pytest
+        python -m pytest
