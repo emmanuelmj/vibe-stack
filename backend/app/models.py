@@ -10,8 +10,8 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    clerk_id = Column(String(255), unique=True, index=True, nullable=False)
     email = Column(String(255), unique=True, nullable=False)
-    hashed_password = Column(String(255), nullable=False)
     full_name = Column(String(100), nullable=True)
     bio = Column(Text, nullable=True)
     is_active = Column(Boolean, default=True)
