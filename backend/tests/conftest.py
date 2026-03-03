@@ -1,8 +1,12 @@
+import os
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
+
+# Mock environment variables for testing before importing the app
+os.environ["CLERK_WEBHOOK_SECRET"] = "whsec_test_secret"
 
 from app.main import app
 from app.core.database import get_db

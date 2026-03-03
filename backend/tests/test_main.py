@@ -10,35 +10,13 @@ def test_trigger_webhook_unauthorized(client):
         json={"workflow_id": "test", "payload_data": {}}
     )
     assert response.status_code == 401
-    assert response.json()["detail"] == "Not authenticated"
+    assert response.json()["detail"] == "Could not validate credentials"
 
-def test_register_user(client):
-    response = client.post("/api/v1/auth/register", json={
-        "email": "test@example.com",
-        "password": "testpassword",
-        "full_name": "Test User"
+def test_clerk_webhook_missing_headers(client):
+    response = client.post("/api/v1/auth/webhooks/clerk", json={
+        "type": "user.created",
+        "data": {"id": "test_clerk_id"}
     })
-    
-    assert response.status_code == 201
-    data = response.json()
-    assert data["email"] == "test@example.com"
-    assert "id" in data
-
-def test_login_user(client):
-    # Register first
-    client.post("/api/v1/auth/register", json={
-        "email": "login@example.com",
-        "password": "testpassword",
-        "full_name": "Login User"
-    })
-    
-    # Attempt login
-    response = client.post("/api/v1/auth/login", json={
-        "email": "login@example.com",
-        "password": "testpassword"
-    })
-    
-    assert response.status_code == 200
-    data = response.json()
-    assert "access_token" in data
-    assert data["token_type"] == "bearer"
+    # Should fail because of missing svix headers
+    assert response.status_code == 400
+    assert "Missing required Svix headers" in response.json()["detail"]
