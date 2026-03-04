@@ -33,10 +33,10 @@ async def global_exception_handler(request: Request, exc: Exception):
     
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-from app.api import auth, users
+from app.api import users, webhooks
 
-app.include_router(auth.router, prefix="/api/v1")
 app.include_router(users.router, prefix="/api/v1")
+app.include_router(webhooks.router, prefix="/api/v1")
 
 from datetime import datetime, timezone
 

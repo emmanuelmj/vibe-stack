@@ -13,7 +13,7 @@ def test_trigger_webhook_unauthorized(client):
     assert response.json()["detail"] == "Could not validate credentials"
 
 def test_clerk_webhook_missing_headers(client):
-    response = client.post("/api/v1/auth/webhooks/clerk", json={
+    response = client.post("/api/v1/webhooks/clerk", json={
         "type": "user.created",
         "data": {"id": "test_clerk_id"}
     })
